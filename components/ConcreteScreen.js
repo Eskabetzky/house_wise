@@ -6,7 +6,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 export default function ConcreteScreen() {
   const navigation = useNavigation(); // Access navigation
   const handlePress = () => {
-    alert('Wapa nahuman!');
+    alert('Wap');
   };
 
   return (
@@ -21,19 +21,19 @@ export default function ConcreteScreen() {
     
       <ScrollView style = {styles.formContainer}>
         <View style = {styles.row} >
-        <TouchableOpacity style = {styles.concreteiconContainer2} onPress={handlePress}>
+        <TouchableOpacity style = {styles.concreteiconContainer2} onPress = {() => navigation.navigate ('House Dimension')}>
                 <Image  source={require('../assets/Dimensionicon.png')} style={styles.concreteicon} />
                 <Text style={styles.concreteiconText}>Dimension</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style = {styles.concreteiconContainer2} onPress={handlePress}>
+            <TouchableOpacity style = {styles.concreteiconContainer2} onPress = {() => navigation.navigate ('Footing')}>
                 <Image  source={require('../assets/footingicon.png')} style={styles.concreteicon} />
                 <Text style={styles.concreteiconText}>Footing</Text>
             </TouchableOpacity>
         </View>  
 
         <View  style = {styles.row}>
-        <TouchableOpacity style = {styles.concreteiconContainer2} onPress={handlePress}>
+        <TouchableOpacity style = {styles.concreteiconContainer2} onPress = {() => navigation.navigate ('Concrete Wall')}>
                 <Image  source={require('../assets/Wallicon.png')} style={styles.concreteicon} />
                 <Text style={styles.concreteiconText} >Wall</Text>
             </TouchableOpacity>
@@ -45,7 +45,7 @@ export default function ConcreteScreen() {
         </View>
 
         <View  style = {styles.row}>
-        <TouchableOpacity style = {styles.concreteiconContainer2} onPress={handlePress}>
+        <TouchableOpacity style = {styles.concreteiconContainer2} onPress = {() => navigation.navigate ('Column')}>
                 <Image  source={require('../assets/Columnicon.png')} style={styles.concreteicon} />
                 <Text style={styles.concreteiconText} >Column</Text>
             </TouchableOpacity>

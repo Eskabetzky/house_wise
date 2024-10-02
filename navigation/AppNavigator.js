@@ -9,8 +9,12 @@ import ConcreteScreen from '../components/ConcreteScreen';
 import WoodenScreen from '../components/WoodenScreen';
 import ProfileScreen from '../components/ProfileScreen';
 import Dashboard from '../components/Dashboard';
-import CreateProjectScreen from '../components/CreateProjectScreen'
-import ProjectHistoryScreen from '../components/ProjectHistoryScreen'
+import CreateProjectScreen from '../components/CreateProjectScreen';
+import ProjectHistoryScreen from '../components/ProjectHistoryScreen';
+import ConcreteWall from '../components/ConcreteWall';
+import HouseDimensionScreen from '../components/HouseDimensionScreen';
+import FootingScreen from '../components/FootingScreen';
+import ColumnScreen from '../components/ColumnScreen';
 
 
 const Stack = createStackNavigator();
@@ -31,6 +35,10 @@ const AppNavigator = () => {
           <Stack.Screen name="Dashboard" component={Dashboard} />
           <Stack.Screen name="Create" component={CreateProjectScreen} />
           <Stack.Screen name="History" component={ProjectHistoryScreen} />
+          <Stack.Screen name="Concrete Wall" component={ConcreteWall} />
+          <Stack.Screen name="House Dimension" component={HouseDimensionScreen} />
+          <Stack.Screen name="Footing" component={FootingScreen} />
+          <Stack.Screen name="Column" component={ColumnScreen} />
         </Stack.Navigator>
 
     </NavigationContainer>

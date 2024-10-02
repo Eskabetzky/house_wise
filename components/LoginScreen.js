@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native'; // Import useNavigation hook
@@ -99,14 +100,28 @@ const LoginScreen = () => {
             <View style={styles.line} />
         </View>
 
-        {/* Google button */}
+        {/* Google button
         <View style={styles.socialContainer}>
           <TouchableOpacity style={styles.googleButton} disabled={!request} onPress={() => promptAsync()}>
             <View style={styles.googleButtonContent}>
               <FontAwesome name="google" size={32} color="#DB4437" style={styles.googleIcon} />
             </View>
           </TouchableOpacity>
-        </View>
+        </View> */}
+
+        {/* Social Login Buttons */}
+      <View style={styles.socialContainer}>
+        <TouchableOpacity disabled={!request} onPress={() => promptAsync()}>
+          <FontAwesome name="google" size={32} color="#DB4437" />
+        </TouchableOpacity>
+        <TouchableOpacity>
+          <FontAwesome name="facebook" size={32} color="#3b5998" />
+        </TouchableOpacity>
+        <TouchableOpacity>
+          <FontAwesome name="twitter" size={32} color="#1DA1F2" />
+        </TouchableOpacity>
+      </View>
+
 
         {/* Footer */}
         <View style={styles.footer}>
@@ -210,13 +225,20 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
 
+  // socialContainer: {
+  //   marginLeft: 10,
+  //   marginTop: 25,
+  //   color: '#DB4437',
+  //   fontWeight: 'bold',
+  //   fontSize: 11,
+  //   alignItems: 'center',
+  // },
+
   socialContainer: {
-    marginLeft: 10,
-    marginTop: 25,
-    color: '#DB4437',
-    fontWeight: 'bold',
-    fontSize: 11,
-    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    marginTop: 20,
+    marginBottom: 20,
   },
 
   googleButton: {

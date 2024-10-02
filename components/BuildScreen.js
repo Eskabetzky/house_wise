@@ -10,13 +10,15 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-
+     
       <View  style = {styles.container2}>
-
-      <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.navigate('Options')} >
-        <Image  source={require('../assets/houseiconn.png')} style={styles.icon} />
-        <Text style={styles.iconText}>Build</Text>
-      </TouchableOpacity>
+        <View style = {styles.container3}>
+         <Image  source={require('../assets/ConcreteMix.png')} style={styles.concrete_mix}/>
+        </View>
+        <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.navigate('Options')} >
+          <Image  source={require('../assets/houseiconn.png')} style={styles.icon} />
+          <Text style={styles.iconText}>Build</Text>
+        </TouchableOpacity>
 
       </View>
 
@@ -46,20 +48,40 @@ const styles = StyleSheet.create({
     height: '80%',
     borderRadius: 40,
     alignContent: 'center',
-    marginTop:-450
+    marginTop:-169
   },
+  container3: {
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 20,
+    borderColor: '#FCC205',
+    borderWidth: 4,
+    alignContent: 'center',
+    marginTop:10,
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 15,
+    elevation:10
+  },
+
 
   iconContainer: {
     backgroundColor: '#FCC205',
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 400,
+    marginTop: 20,
     borderColor:'#FCC205',
     borderWidth: 3,
     borderRadius: 15,
     elevation: 20
   },
-
+  concrete_mix: {
+    width: 300, // Adjust the width and height as per your icon's aspect ratio
+    height: 300,
+    resizeMode: 'contain',
+  },
   icon: {
     width: 100, // Adjust the width and height as per your icon's aspect ratio
     height: 100,
