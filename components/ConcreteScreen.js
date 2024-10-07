@@ -115,10 +115,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     elevation: 10,
-    marginTop:40 ,
+    marginTop:30 ,
     marginBottom: 20,
     borderColor: '#FCC205',
-    borderWidth: 2,
+    borderWidth: 3,
     borderRadius: 15
   },
   concreteicon: {

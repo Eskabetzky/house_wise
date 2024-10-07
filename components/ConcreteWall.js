@@ -404,7 +404,7 @@ const styles = StyleSheet.create({
   },
   input: {
     borderWidth: 1,
-    borderColor: '#000',
+    borderColor: '#ccc',
     borderRadius: 5,
     padding: 5,
     width: 150,
@@ -413,7 +413,7 @@ const styles = StyleSheet.create({
   },
   mortarinput: {
     borderWidth: 1,
-    borderColor: '#000',
+    borderColor: '#ccc',
     borderRadius: 5,
     padding: 5,
     width: 100,
@@ -422,7 +422,7 @@ const styles = StyleSheet.create({
   },
   pickerContainer: {
     borderWidth: 1,
-    borderColor: '#000',
+    borderColor: '#ccc',
     borderRadius: 5,
     marginHorizontal: 10,
   },
@@ -434,7 +434,7 @@ const styles = StyleSheet.create({
 
   pickerContainer2: {
     borderWidth: 1,
-    borderColor: '#000',
+    borderColor: '#ccc',
     borderRadius: 5,
     width: 150,
     height: 40,

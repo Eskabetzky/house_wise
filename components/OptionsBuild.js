@@ -14,6 +14,9 @@ export default function App() {
 
   return (
     <View style={styles.container}>
+
+      <Text style={styles.optionBuild}>Build Your Vision: Concrete for Durability</Text>
+      <Text style={styles.optionBuild}>Wooden for Warmth!</Text>
       {/* Wrap the two icons in a row */}
       <View style={styles.row}>
         <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.navigate('ConcreteScreen')}>
@@ -37,6 +40,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+
+  
+  optionBuild:{
+    fontSize: 20,
+    fontWeight: 'bold',
+    
+}
+,
   row: {
     flexDirection: 'row', // Puts the two icons in a row
     justifyContent: 'space-between', // Space between the two icons
@@ -50,7 +61,8 @@ const styles = StyleSheet.create({
     elevation: 5, // Shadow for Android
     borderRadius: 15,
     borderColor:'#FCC205',
-    borderWidth: 3
+    borderWidth: 3,
+    marginTop: 20
   },
   icon: {
     width: 100, // Adjust the width and height as per your icon's aspect ratio

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Alert } from 'react-native';
 
 const ColumnScreen = () => {
   const [length, setLength] = useState('');
@@ -14,23 +14,48 @@ const ColumnScreen = () => {
   const [aggregatesCubicMeters, setAggregatesCubicMeters] = useState(0);
 
   const calculateMaterials = () => {
-    const crossSectionArea = (parseFloat(length) * parseFloat(width)) / 1000000; // Convert mm² to m²
-    const rebarArea = Math.PI * (Math.pow(parseFloat(rebarDiameter) / 1000, 2)) / 4; // m²
-    const minSteelArea = 0.000875; // 875 sq. mm converted to sq. m
-    const steelQuantity = Math.ceil(minSteelArea / rebarArea); // Total Steel Bar needed
+    const lengthVal = parseFloat(length);
+    const widthVal = parseFloat(width);
+    const heightVal = parseFloat(height);
+    const numberOfFootingsVal = parseInt(numberOfFootings);
+    const rebarDiameterVal = parseFloat(rebarDiameter);
 
-    // Calculate total volume for cement, sand, and aggregates
-    const totalVolume = (parseFloat(height) * crossSectionArea * parseInt(numberOfFootings)); // m³
+    // Validate input fields
+    if (isNaN(lengthVal) || isNaN(widthVal) || isNaN(heightVal) || isNaN(numberOfFootingsVal) || isNaN(rebarDiameterVal)) {
+      Alert.alert('Invalid input', 'Please enter valid numbers for all fields.');
+      return;
+    }
 
-    // Cement calculation (9 bags per m³ under Class A mix prop)
-    const totalCement = totalVolume * 9; // Bags of cement
+    // Ensure inputs are positive numbers
+    if (lengthVal <= 0 || widthVal <= 0 || heightVal <= 0 || numberOfFootingsVal <= 0 || rebarDiameterVal <= 0) {
+      Alert.alert('Invalid input', 'Values must be greater than zero.');
+      return;
+    }
 
-    // Sand calculation (0.5 cu. m per m³)
-    const totalSand = totalVolume * 0.5; // m³ of sand
+    // Step 1: Calculate cross-sectional area of the column (in mm²) and convert to m²
+    const crossSectionArea = lengthVal * widthVal; // in mm²
 
-    // Aggregate calculation (1 cu. m per m³)
-    const totalAggregates = totalVolume; // m³ of aggregates
+    // Step 2: Calculate rebar area
+    const rebarArea = Math.PI * (Math.pow(rebarDiameterVal / 2, 2)); // in mm²
 
+    // Step 3: Minimum steel area for the column (875 mm²)
+    const minSteelArea = 875; // in mm²
+
+    // Step 4: Calculate number of rebars needed
+    const steelQuantity = Math.ceil(minSteelArea / rebarArea); // total rebars needed, rounded up
+
+    // Step 5: Convert cross-sectional area to m² for volume calculation
+    const crossSectionAreaInMeters = crossSectionArea * 0.000001; // convert from mm² to m²
+
+    // Step 6: Calculate the total volume of the column (in m³)
+    const totalVolume = heightVal * crossSectionAreaInMeters * numberOfFootingsVal; // m³
+
+    // Step 7: Calculate the quantities of materials
+    const totalCement = totalVolume * 9; // Bags of cement (Class A mix)
+    const totalSand = totalVolume * 0.5; // Cubic meters of sand
+    const totalAggregates = totalVolume * 1; // Cubic meters of aggregates
+
+    // Update state with calculated values
     setRebarQuantity(steelQuantity);
     setCementBags(totalCement);
     setSandCubicMeters(totalSand);

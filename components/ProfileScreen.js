@@ -1,124 +1,150 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
-import { MaterialIcons, FontAwesome5, Ionicons } from '@expo/vector-icons'; // Icons used
-import AsyncStorage from '@react-native-async-storage/async-storage'; // For storing and retrieving user data
+import React, { useState, useEffect } from 'react';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { useNavigation } from '@react-navigation/native'; // Import useNavigation hook;
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'; // Import for hamburger and account icon;
 
-export default function ProfileScreen({ navigation }) {
-  const [userProfile, setUserProfile] = useState(null); // State to hold user profile
 
-  // Fetch user data from AsyncStorage or Backend
-  const getUserData = async () => {
-    try {
-      const userData = await AsyncStorage.getItem('userProfile'); // Retrieve user data from AsyncStorage
-      if (userData) {
-        setUserProfile(JSON.parse(userData)); // Parse and set user data
-      }
-    } catch (error) {
-      console.error('Error fetching user data', error);
-    }
-  };
 
-  // On component mount, fetch user data
-  useEffect(() => {
-    getUserData();
-  }, []);
+
+
+// DashboardCard Component
+const DashboardCard = ({ icon, title }) => {
+  return (
+    <View style={styles.card}>
+      <Icon name={icon} size={40} color="#353336" />
+      <Text style={styles.cardTitle}>{title}</Text>
+    </View>
+  );
+};
+
+const ProfileScreen = () => {
+  const navigation = useNavigation();
 
   return (
     <View style={styles.container}>
-      {/* Header with Hamburger Icon */}
+      
+      
+      {/* Header with Menu and Account Icons */}
       <View style={styles.header}>
-        <Image
-          source={{
-            uri: userProfile?.profileImage || 'https://www.example.com/default-profile.png', // Default image if no user image
-          }}
-          style={styles.profileImage}
-        />
-        <Text style={styles.profileName}>
-          {userProfile ? userProfile.name : 'Guest User'} {/* Display user's name or Guest */}
-        </Text>
+        {/* Left Side with Menu Icon */}
+        <TouchableOpacity>
+          <Icon name="menu" size={30} color='#353336'/>
+        </TouchableOpacity>
+
+        {/* Right Side with Account Circle Icon */}
+        <TouchableOpacity style={styles.accountIcon}>
+          <Icon name="account-circle" size={40} color='#353336'/>
+        </TouchableOpacity>
       </View>
+      
+      <View style={styles.imagecontainer}>
+        {/* Illustration */}
+        <Text style={styles.illustration}>Dashboard</Text>
+      </View>
+      
+      {/* Form Section */}
+      <View style={styles.formContainer}>
+        {/* Dashboard Section */}
+       
+        <TouchableOpacity style = {styles.concreteiconContainer2}>
+                <Image  source={require('../assets/accountIcon.png')} style={styles.concreteicon} />
+                <Text style={styles.concreteiconText}>Account</Text>
+            </TouchableOpacity>
 
-      {/* Options */}
-      <View style={styles.optionContainer}>
-        {/* Create Option with Custom + Icon */}
-        <TouchableOpacity style={styles.option} onPress={() => navigation.navigate('Build')}>
-          <View style={styles.iconContainer}>
-            <FontAwesome5 name="plus" size={18} color="white" />
-          </View>
-          <Text style={styles.optionText}>Create</Text>
-        </TouchableOpacity>
+            <TouchableOpacity style = {styles.concreteiconContainer2}>
+                <Image  source={require('../assets/HistoryIcon.png')} style={styles.concreteicon} />
+                <Text style={styles.concreteiconText}>History</Text>
+            </TouchableOpacity> 
 
-        {/* History Icon */}
-        <TouchableOpacity style={styles.option} onPress={() => navigation.navigate('History')}>
-          <FontAwesome5 name="history" size={24} color="black" />
-          <Text style={styles.optionText}>History</Text>
-        </TouchableOpacity>
+        
+        <TouchableOpacity style = {styles.concreteiconContainer2} onPress = {() => navigation.navigate ('Build')}>
+                <Image  source={require('../assets/CreateIcon.png')} style={styles.concreteicon} />
+                <Text style={styles.concreteiconText} >Create</Text>
+            </TouchableOpacity>
 
-        {/* Feedback Icon */}
-        <TouchableOpacity style={styles.option} onPress={() => navigation.navigate('Feedback')}>
-          <MaterialIcons name="feedback" size={24} color="black" />
-          <Text style={styles.optionText}>Feedback</Text>
-        </TouchableOpacity>
-
-        {/* Logout Option */}
-        <TouchableOpacity style={[styles.option, styles.logout]}>
-          <Ionicons name="log-out-outline" size={24} color="red" />
-          <Text style={[styles.optionText, { color: 'red' }]}>Logout</Text>
-        </TouchableOpacity>
+            <TouchableOpacity style = {styles.concreteiconContainer2}>
+                <Image  source={require('../assets/feedbackIcon.png')} style={styles.concreteicon} />
+                <Text style={styles.concreteiconText} >Feedbacks</Text>
+            </TouchableOpacity>
+       
       </View>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-  },
-  header: {
     backgroundColor: '#FCC205',
-    alignItems: 'center',
-    paddingVertical: 40,
-    borderBottomLeftRadius: 40,
-    borderBottomRightRadius: 40,
-  },
-  profileImage: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    backgroundColor: '#fff',
-  },
-  profileName: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    color: '#fff',
-    marginTop: 10,
-  },
-  optionContainer: {
-    marginTop: 30,
-  },
-  option: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 20,
-    paddingVertical: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: '#f1f1f1',
-  },
-  optionText: {
-    marginLeft: 20,
-    fontSize: 16,
-  },
-  iconContainer: {
-    backgroundColor: '#FCC205', // Custom background for the icon
-    padding: 10,
-    borderRadius: 50, // Makes it circular
     justifyContent: 'center',
+    alignItems: 'flex-start',
+  },
+
+ 
+  concreteiconContainer2: {
+    backgroundColor: '#fff',
     alignItems: 'center',
+    justifyContent: 'center',
+    marginTop:10 ,
+    marginBottom: 10,
+    borderColor: '#FCC205',
+    borderWidth: 3,
+    borderRadius: 15,
+    width :150
   },
-  logout: {
-    borderTopWidth: 1,
-    borderTopColor: '#f1f1f1',
-    marginTop: 20,
+  concreteicon: {
+    width: 120, // Adjust the width and height as per your icon's aspect ratio
+    height: 80,
+    resizeMode: 'contain',
   },
+
+  concreteiconText: {
+    fontSize: 15,
+    fontWeight: 'bold',
+  },
+
+  header: {
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
+    paddingVertical: 20,
+    backgroundColor: '#FCC205',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+  },
+
+  illustration: {
+    fontSize: 24,
+    marginBottom: 10,
+    marginTop: 250,
+    marginLeft: 40,
+    fontWeight: 'bold',
+  
+  },
+  formContainer: {
+    width: '100%',
+    height: '70%',
+    backgroundColor: '#fff',
+    padding: 10,
+    borderRadius: 30,
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    alignItems:'center'
+    
+  },
+ 
+  row: {
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    marginBottom: 20,
+    borderWidth:3,
+    borderColor:  '#FCC205',
+    borderRadius:10,
+    elevation: 10
+  },
+  
 });
+
+export default ProfileScreen;

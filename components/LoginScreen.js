@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native'; // Import useNavigation hook
@@ -6,36 +5,6 @@ import * as Google from 'expo-auth-session/providers/google';
 import * as WebBrowser from 'expo-web-browser';
 import { FontAwesome } from '@expo/vector-icons';
 import axios from 'axios';
-
-const handleLogin = async () => {
-  try {
-    const response = await axios.post('http://<your_django_backend_url>/auth/login/', {
-      username: email,
-      password: password,
-    });
-    if (response.status === 200) {
-      useNavigation.navigate('Build'); // navigate to profile page upon success
-    }
-  } catch (error) {
-    console.error('Login failed', error);
-  }
-};
-
-const handleSignUp = async () => {
-  try {
-    const response = await axios.post('http://<your_django_backend_url>/auth/signup/', {
-      username: email,
-      password: password,
-    });
-    if (response.status === 201) {
-      useNavigation.navigate('Login'); // navigate to login page after signup
-    }
-  } catch (error) {
-    console.error('Signup failed', error);
-  }
-};
-
-WebBrowser.maybeCompleteAuthSession();
 
 const LoginScreen = () => {
   const [email, setEmail] = useState('');
@@ -49,10 +18,6 @@ const LoginScreen = () => {
     webClientId: 'YOUR_WEB_CLIENT_ID',
   });
 
-  const handleLogin = () => {
-    console.log('Login pressed');
-  };
-
   // Handle Google Authentication response
   useEffect(() => {
     if (response?.type === 'success') {
@@ -61,67 +26,69 @@ const LoginScreen = () => {
       if (authentication) {
         // Here, authentication will have access_token
         console.log('Access Token:', authentication.accessToken);
-
-        // You can now use this token to authenticate with your backend
-        // or navigate to a new screen, etc.
-        // Example: navigation.navigate('Home');
-
-        // Optionally, you can store the token locally
-        // AsyncStorage.setItem('token', authentication.accessToken);
       }
     }
   }, [response]);
 
   return (
     <View style={styles.container}>
-      {/* Illustration */}
-      <Image source={require('../assets/HWLogo.png')}  style={styles.illustration}/>
-      
+      <View style={styles.imagecontainer}>
+        {/* Illustration */}
+        <Image source={require('../assets/HWLogo.png')} style={styles.illustration} />
+      </View>
       {/* Form Section */}
       <View style={styles.formContainer}>
-        <TextInput style={styles.input} placeholder="youremail@gmail.com" placeholderTextColor="#000"
-          value={email} onChangeText={setEmail} keyboardType="email-address"/>
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={styles.input}
+            placeholder="Email"
+            placeholderTextColor="gray"
+            value={email}
+            onChangeText={setEmail}
+            keyboardType="email-address"
+          />
+          <FontAwesome name="envelope" size={20} color="#000" style={styles.icon} />
+        </View>
 
-        <TextInput style={styles.input} placeholder="••••••••" placeholderTextColor="#000"
-          value={password} onChangeText={setPassword} secureTextEntry />
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={styles.input}
+            placeholder="••••••••"
+            placeholderTextColor="gray"
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry
+          />
+          <FontAwesome name="lock" size={20} color="#000" style={styles.icon} />
+        </View>
 
         <TouchableOpacity onPress={() => console.log('Forgot Password? pressed')}>
           <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.loginButton} onPress = {() => navigation.navigate ('Profile')}>
+        <TouchableOpacity style={styles.loginButton} onPress={() => navigation.navigate('Profile')}>
           <Text style={styles.loginButtonText}>Log In</Text>
         </TouchableOpacity>
 
         {/* or Login with Google */}
         <View style={styles.googleButtonWrapper}>
-            <View style={styles.line} />
-              <Text style={styles.googleButtonText}>Login with Google</Text>
-            <View style={styles.line} />
+          <View style={styles.line} />
+          <Text style={styles.googleButtonText}>or</Text>
+          <View style={styles.line} />
         </View>
 
-        {/* Google button
-        <View style={styles.socialContainer}>
-          <TouchableOpacity style={styles.googleButton} disabled={!request} onPress={() => promptAsync()}>
-            <View style={styles.googleButtonContent}>
-              <FontAwesome name="google" size={32} color="#DB4437" style={styles.googleIcon} />
-            </View>
-          </TouchableOpacity>
-        </View> */}
-
         {/* Social Login Buttons */}
-      <View style={styles.socialContainer}>
-        <TouchableOpacity disabled={!request} onPress={() => promptAsync()}>
-          <FontAwesome name="google" size={32} color="#DB4437" />
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <FontAwesome name="facebook" size={32} color="#3b5998" />
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <FontAwesome name="twitter" size={32} color="#1DA1F2" />
-        </TouchableOpacity>
-      </View>
-
+        <View style={styles.socialContainer}>
+          <TouchableOpacity disabled={!request} onPress={() => promptAsync()}>
+            <FontAwesome name="google" size={32} color="#DB4437" />
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <FontAwesome name="facebook" size={32} color="#3b5998" />
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <FontAwesome name="twitter" size={32} color="#1DA1F2" />
+          </TouchableOpacity>
+        </View>
 
         {/* Footer */}
         <View style={styles.footer}>
@@ -138,49 +105,50 @@ const LoginScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#FCC205',
     justifyContent: 'center',
     alignItems: 'center',
-  },
 
+  },
   illustration: {
     width: 200,
     height: 200,
-    marginBottom: 20,
-    marginTop: 100,
+    marginBottom: 10,
+    marginTop: 250,
     resizeMode: 'contain',
   },
-
   formContainer: {
-    width: '99.7%',
+    width: '97.5%',
     height: '80%',
     backgroundColor: '#FCC205',
     padding: 30,
-    borderRadius: 40
-
+    borderRadius: 30,
   },
-
-  input: {
-    height: 50,
-    backgroundColor: '#FCC205',
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 2,
+    borderColor: '#353336',
     borderRadius: 10,
-    paddingHorizontal: 15,
-    marginBottom: 15,
-    borderBottomColor: '#000',
-    borderBottomEndRadius: 0,
-    borderBottomLeftRadius: 10,
-    borderLeftColor: '#FCC205',
-    borderBottomWidth: 2,
-    color: '#000',
-    marginTop: 30
+    marginTop: 20,
+    backgroundColor: '#FCC205',
+    paddingHorizontal: 10,
+  
   },
-
+  input: {
+    flex: 1,
+    height: 45,
+    color: '#000', // Changed to black for better visibility
+    padding: 10,
+  },
+  icon: {
+    marginLeft: 10,
+  },
   forgotPasswordText: {
     alignSelf: 'flex-end',
     color: '#000',
     marginBottom: 30,
   },
-
   loginButton: {
     backgroundColor: '#353336',
     borderRadius: 10,
@@ -192,88 +160,49 @@ const styles = StyleSheet.create({
     marginLeft: 50,
     borderColor: '#FCC205',
     borderWidth: 1,
-    elevation: 10
+    elevation: 10,
   },
-
   loginButtonText: {
     fontSize: 14,
     fontWeight: 'bold',
     color: '#FCC205',
   },
-
   googleButtonWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
-    width: '100%', // Adjust this as necessary
-    justifyContent: 'center'
-  
+    width: '100%',
+    justifyContent: 'center',
   },
-
   googleButtonText: {
     color: '#353336',
     fontSize: 11,
     fontWeight: 'bold',
-    marginHorizontal: 10, // Space between text and lines
+    marginHorizontal: 10,
     marginTop: 20,
   },
-
   line: {
     flex: 1,
     height: 1,
-    backgroundColor: '#000', // Color of the line
-    marginHorizontal: 1, // Add some space between line and text
+    backgroundColor: '#000',
+    marginHorizontal: 1,
     marginTop: 20,
   },
-
-  // socialContainer: {
-  //   marginLeft: 10,
-  //   marginTop: 25,
-  //   color: '#DB4437',
-  //   fontWeight: 'bold',
-  //   fontSize: 11,
-  //   alignItems: 'center',
-  // },
-
   socialContainer: {
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     marginTop: 20,
     marginBottom: 20,
   },
-
-  googleButton: {
-    borderColor: '#FCC205',
-    borderWidth: 1,
-    borderRadius: 10,
-    paddingVertical: 10,
-    paddingHorizontal: 30,
-    width: 200,
-    alignItems:'center',
-    backgroundColor: '#353336',
-    elevation: 10
-  },
-
-  googleButtonContent: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-
-  googleIcon: {
-    marginRight: 10,
-  },
-
   footer: {
     flexDirection: 'row',
     marginTop: 20,
   },
-
   footerText: {
     color: '#000',
     alignItems: 'center',
     marginTop: 10,
     marginLeft: 65,
   },
-
   registerText: {
     marginLeft: 10,
     marginTop: 10,
