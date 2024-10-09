@@ -57,7 +57,7 @@ const ProfileScreen = () => {
             </TouchableOpacity> 
 
         
-        <TouchableOpacity style = {styles.concreteiconContainer2} onPress = {() => navigation.navigate ('Build')}>
+        <TouchableOpacity style = {styles.concreteiconContainer2} onPress = {() => navigation.navigate ('Suggest')}>
                 <Image  source={require('../assets/CreateIcon.png')} style={styles.concreteicon} />
                 <Text style={styles.concreteiconText} >Create</Text>
             </TouchableOpacity>
@@ -75,7 +75,7 @@ const ProfileScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FCC205',
+    backgroundColor: '#FFBF00',
     justifyContent: 'center',
     alignItems: 'flex-start',
   },
