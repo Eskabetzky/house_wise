@@ -7,7 +7,9 @@ import {
   Text,
   StatusBar,
   TouchableOpacity,
-  Dimensions,StyleSheet
+  Dimensions,
+  StyleSheet,
+  Modal,
 } from 'react-native';
 
 const { width, height } = Dimensions.get('window');
@@ -17,31 +19,42 @@ const COLORS = { primary: '#FCC205', white: '#fff' };
 const slides = [
   {
     id: '1',
-    image: require('../assets/ConcreteMix.png'),
-    title: 'Best Digital Solution',
-    subtitle: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+    image: require('../assets/images/Project_1.png'),
+    zoomedImage: require('../assets/images/sample1.jpg'),
+    title: "Floor Plan and Cost Estimation",
+    subtitle: "Detailed Layout and Breakdown for 12 by 5 house dimension",
   },
   {
     id: '2',
-    image: require('../assets/HWLogo.png'),
-    title: 'Achieve Your Goals',
-    subtitle: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+    image: require('../assets/images/Project_1.png'),
+    zoomedImage: require('../assets/images/sample1.jpg'),
+    title: "Floor Plan and Cost Estimation",
+    subtitle: "Detailed Layout and Breakdown for 12 by 5 house dimension",
   },
   {
     id: '3',
-    image: require('../assets/rooficon.png'),
-    title: 'Increase Your Value',
-    subtitle: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+    image: require('../assets/images/Project_1.png'),
+    zoomedImage: require('../assets/images/sample1.jpg'),
+    title: "Floor Plan and Cost Estimation",
+    subtitle: "Detailed Layout and Breakdown for 12 by 5 house dimension",
   },
+  
 ];
 
-const Slide = ({ item }) => {
+const Slide = ({ item, onImagePress }) => {
   return (
     <View style={{ alignItems: 'center' }}>
-      <Image
-        source={item?.image}
-        style={{ height: '85%', width, resizeMode: 'contain', borderRadius: 10 }}
-      />
+      <TouchableOpacity onPress={() => onImagePress(item.zoomedImage)}>
+        <Image
+          source={item?.image}
+          style={{
+            height: '85%',
+            width,
+            resizeMode: 'contain',
+            borderRadius: 10,
+          }}
+        />
+      </TouchableOpacity>
       <View>
         <Text style={styles.title}>{item?.title}</Text>
         <Text style={styles.subtitle}>{item?.subtitle}</Text>
@@ -52,6 +65,8 @@ const Slide = ({ item }) => {
 
 const OnboardingScreen = ({ navigation }) => {
   const [currentSlideIndex, setCurrentSlideIndex] = React.useState(0);
+  const [modalVisible, setModalVisible] = React.useState(false);
+  const [selectedImage, setSelectedImage] = React.useState(null);
   const ref = React.useRef();
 
   const updateCurrentSlideIndex = e => {
@@ -74,6 +89,11 @@ const OnboardingScreen = ({ navigation }) => {
     const offset = lastSlideIndex * width;
     ref?.current.scrollToOffset({ offset });
     setCurrentSlideIndex(lastSlideIndex);
+  };
+
+  const onImagePress = (zoomedImage) => {
+    setSelectedImage(zoomedImage); // Set the different image
+    setModalVisible(true);
   };
 
   const Footer = () => {
@@ -100,9 +120,7 @@ const OnboardingScreen = ({ navigation }) => {
               <TouchableOpacity
                 style={styles.btn}
                 onPress={() => navigation.navigate('Build')}>
-                <Text style={styles.getStartedText}>
-                  BUILD PROJECT
-                </Text>
+                <Text style={styles.getStartedText}>BUILD PROJECT</Text>
               </TouchableOpacity>
             </View>
           ) : (
@@ -138,9 +156,29 @@ const OnboardingScreen = ({ navigation }) => {
         horizontal
         data={slides}
         pagingEnabled
-        renderItem={({ item }) => <Slide item={item} />}
+        renderItem={({ item }) => <Slide item={item} onImagePress={onImagePress} />}
       />
       <Footer />
+
+      {/* Modal for zoomed-in (different) image */}
+      {selectedImage && (
+        <Modal
+          visible={modalVisible}
+          transparent={true}
+          animationType="fade"
+          onRequestClose={() => setModalVisible(false)}
+        >
+          <View style={styles.modalContainer}>
+            <TouchableOpacity style={styles.modalCloseButton} onPress={() => setModalVisible(false)}>
+              <Text style={styles.closeButtonText}>X</Text>
+            </TouchableOpacity>
+            <Image
+              source={selectedImage}
+              style={styles.modalImage}
+            />
+          </View>
+        </Modal>
+      )}
     </SafeAreaView>
   );
 };
@@ -148,7 +186,7 @@ const OnboardingScreen = ({ navigation }) => {
 // Styles moved to the bottom part of the code
 const styles = StyleSheet.create({
   subtitle: {
-    color:'#353336',
+    color: '#353336',
     fontSize: 13,
     marginTop: 10,
     maxWidth: '70%',
@@ -156,7 +194,7 @@ const styles = StyleSheet.create({
     lineHeight: 23,
   },
   title: {
-    color:'#353336',
+    color: '#353336',
     fontSize: 22,
     fontWeight: 'bold',
     marginTop: 20,
@@ -183,24 +221,24 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   skipBtn: {
-    borderColor:'#353336',
+    borderColor: '#353336',
     borderWidth: 1,
     backgroundColor: 'transparent',
   },
   skipText: {
     fontWeight: 'bold',
     fontSize: 15,
-    color:'#353336',
+    color: '#353336',
   },
   nextText: {
     fontWeight: 'bold',
     fontSize: 15,
-    color: '#FCC205'
+    color: '#FCC205',
   },
   getStartedText: {
     fontWeight: 'bold',
     fontSize: 15,
-    color: '#FCC205'
+    color: '#FCC205',
   },
   footerContainer: {
     height: height * 0.20,
@@ -218,6 +256,31 @@ const styles = StyleSheet.create({
   },
   flatListContainer: {
     height: height * 0.80,
+  },
+  modalContainer: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.8)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalImage: {
+    width: '90%',
+    height: '70%',
+    resizeMode: 'contain',
+    borderRadius: 10,
+  },
+  modalCloseButton: {
+    position: 'absolute',
+    top: 40,
+    right: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 10,
+  },
+  closeButtonText: {
+    color: 'black',
+    fontSize: 18,
+    fontWeight: 'bold',
   },
 });
 

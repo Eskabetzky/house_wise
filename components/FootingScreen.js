@@ -69,7 +69,9 @@ const FootingSteelCalculation = () => {
     const volumeOfConcrete = slabs * (thickness * length * width); // volume in cubic meters
 
     // Calculate materials based on class "A" concrete ratios
-    const cementRequired = volumeOfConcrete * 9.0; // 9 bags of cement per cubic meter
+    // Calculate materials based on class "A" concrete ratios
+const cementRequired = Math.round(volumeOfConcrete * 9.0); // Round to nearest number
+// 9 bags of cement per cubic meter
     const sandRequired = volumeOfConcrete * 0.50; // 0.5 cubic meters of sand per cubic meter of concrete
     const gravelRequired = volumeOfConcrete * 1.0; // 1 cubic meter of gravel per cubic meter of concrete
 
