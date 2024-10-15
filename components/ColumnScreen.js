@@ -14,9 +14,9 @@ const ColumnScreen = () => {
   const [aggregatesCubicMeters, setAggregatesCubicMeters] = useState(0);
 
   const calculateMaterials = () => {
-    const lengthVal = parseFloat(length);
-    const widthVal = parseFloat(width);
-    const heightVal = parseFloat(height);
+    const lengthVal = parseFloat(length); // in mm
+    const widthVal = parseFloat(width); // in mm
+    const heightVal = parseFloat(height); // in meters
     const numberOfFootingsVal = parseInt(numberOfFootings);
     const rebarDiameterVal = parseFloat(rebarDiameter);
 
@@ -34,26 +34,24 @@ const ColumnScreen = () => {
 
     // Step 1: Calculate cross-sectional area of the column (in mm²) and convert to m²
     const crossSectionArea = lengthVal * widthVal; // in mm²
-
-    // Step 2: Calculate rebar area
-    const rebarArea = Math.PI * (Math.pow(rebarDiameterVal / 2, 2)); // in mm²
-
-    // Step 3: Minimum steel area for the column (875 mm²)
-    const minSteelArea = 875; // in mm²
-
-    // Step 4: Calculate number of rebars needed
-    const steelQuantity = Math.ceil(minSteelArea / rebarArea); // total rebars needed, rounded up
-
-    // Step 5: Convert cross-sectional area to m² for volume calculation
     const crossSectionAreaInMeters = crossSectionArea * 0.000001; // convert from mm² to m²
 
-    // Step 6: Calculate the total volume of the column (in m³)
+    // Step 2: Calculate the total volume of the column (in m³)
     const totalVolume = heightVal * crossSectionAreaInMeters * numberOfFootingsVal; // m³
 
-    // Step 7: Calculate the quantities of materials
-    const totalCement = totalVolume * 9; // Bags of cement (Class A mix)
-    const totalSand = totalVolume * 0.5; // Cubic meters of sand
-    const totalAggregates = totalVolume * 1; // Cubic meters of aggregates
+    // Step 3: Calculate rebar area
+    const rebarArea = Math.PI * (Math.pow(rebarDiameterVal / 2, 2)); // in mm²
+
+    // Step 4: Minimum steel area for the column (875 mm²)
+    const minSteelArea = 875; // in mm²
+
+    // Step 5: Calculate number of rebars needed
+    const steelQuantity = Math.ceil(minSteelArea / rebarArea); // total rebars needed, rounded up
+
+    // Step 6: Calculate the quantities of materials based on the total volume
+    const totalCement = totalVolume * 9; // Bags of cement (Class A mix: 9 bags per m³ of concrete)
+    const totalSand = totalVolume * 0.5; // Sand in cubic meters (0.5 m³ per m³ of concrete)
+    const totalAggregates = totalVolume * 1; // Aggregates in cubic meters (1 m³ per m³ of concrete)
 
     // Update state with calculated values
     setRebarQuantity(steelQuantity);

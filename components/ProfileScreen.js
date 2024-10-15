@@ -1,150 +1,138 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
-import { useNavigation } from '@react-navigation/native'; // Import useNavigation hook;
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons'; // Import for hamburger and account icon;
+import React from 'react';
+import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 
-
-
-
-
-// DashboardCard Component
-const DashboardCard = ({ icon, title }) => {
+// MenuItem Component
+const MenuItem = ({ title, icon, onPress }) => {
   return (
-    <View style={styles.card}>
-      <Icon name={icon} size={40} color="#353336" />
-      <Text style={styles.cardTitle}>{title}</Text>
-    </View>
+    <TouchableOpacity style={styles.menuItem} onPress={onPress}>
+      <Image source={icon} style={styles.menuIcon} />
+      <Text style={styles.menuText}>{title}</Text>
+    </TouchableOpacity>
   );
 };
 
-const ProfileScreen = () => {
-  const navigation = useNavigation();
-
+// ProfileScreen Component
+const ProfileScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
-      
-      
-      {/* Header with Menu and Account Icons */}
       <View style={styles.header}>
-        {/* Left Side with Menu Icon */}
-        <TouchableOpacity>
-          <Icon name="menu" size={30} color='#353336'/>
+        <TouchableOpacity style={styles.tab}>
+          <Text style={styles.tabText}>User Profile</Text>
         </TouchableOpacity>
-
-        {/* Right Side with Account Circle Icon */}
-        <TouchableOpacity style={styles.accountIcon}>
-          <Icon name="account-circle" size={40} color='#353336'/>
+        <TouchableOpacity style={styles.tab}>
+          <Text style={styles.tabText}>Settings</Text>
         </TouchableOpacity>
       </View>
-      
-      <View style={styles.imagecontainer}>
-        {/* Illustration */}
-        <Text style={styles.illustration}>Dashboard</Text>
+
+      <View style={styles.profileContainer}>
+        <Image
+          source={{ uri: 'https://via.placeholder.com/100' }} // Placeholder for profile image
+          style={styles.profileImage}
+        />
+        <Text style={styles.profileName}>Marvin Dala</Text>
+        <Text style={styles.points}>Pinaka Gwapo</Text>
       </View>
-      
-      {/* Form Section */}
-      <View style={styles.formContainer}>
-        {/* Dashboard Section */}
-       
-        <TouchableOpacity style = {styles.concreteiconContainer2}>
-                <Image  source={require('../assets/accountIcon.png')} style={styles.concreteicon} />
-                <Text style={styles.concreteiconText}>Account</Text>
-            </TouchableOpacity>
 
-            <TouchableOpacity style = {styles.concreteiconContainer2}>
-                <Image  source={require('../assets/HistoryIcon.png')} style={styles.concreteicon} />
-                <Text style={styles.concreteiconText}>History</Text>
-            </TouchableOpacity> 
-
-        
-        <TouchableOpacity style = {styles.concreteiconContainer2} onPress = {() => navigation.navigate ('Suggest')}>
-                <Image  source={require('../assets/CreateIcon.png')} style={styles.concreteicon} />
-                <Text style={styles.concreteiconText} >Create</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity style = {styles.concreteiconContainer2}>
-                <Image  source={require('../assets/feedbackIcon.png')} style={styles.concreteicon} />
-                <Text style={styles.concreteiconText} >Feedbacks</Text>
-            </TouchableOpacity>
-       
+      <View style={styles.menuContainer}>
+        <MenuItem 
+          title="Edit Profile" 
+          icon={require('../assets/accountIcon.png')} 
+          onPress={() => navigation.navigate('Profile')} 
+        />
+        <MenuItem 
+          title="Saved Project" 
+          icon={require('../assets/HistoryIcon.png')} 
+          onPress={() => navigation.navigate('SavedProjects')} 
+        />
+        <MenuItem 
+          title="Create Project" 
+          icon={require('../assets/CreateIcon.png')} 
+          onPress={() => navigation.navigate('Suggest')} 
+        />
+        <MenuItem 
+          title="Feedbacks" 
+          icon={require('../assets/feedbackIcon.png')} 
+          onPress={() => navigation.navigate('Feedback')} 
+        />
+        <MenuItem 
+          title="Log out" 
+          icon={require('../assets/logout.png')} 
+          onPress={() => navigation.navigate('Logout')} 
+        />
       </View>
     </View>
   );
 };
 
+// Styles
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFBF00',
-    justifyContent: 'center',
-    alignItems: 'flex-start',
+    backgroundColor: '#fff', // Light cream background color
+    paddingHorizontal: 20,
+    paddingVertical: 40,
   },
-
- 
-  concreteiconContainer2: {
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop:10 ,
-    marginBottom: 10,
-    borderColor: '#FCC205',
-    borderWidth: 3,
-    borderRadius: 15,
-    width :150
-  },
-  concreteicon: {
-    width: 120, // Adjust the width and height as per your icon's aspect ratio
-    height: 80,
-    resizeMode: 'contain',
-  },
-
-  concreteiconText: {
-    fontSize: 15,
-    fontWeight: 'bold',
-  },
-
   header: {
-    width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-between',
+    marginBottom: 30,
+  },
+  tab: {
+    paddingVertical: 10,
     paddingHorizontal: 20,
-    paddingVertical: 20,
     backgroundColor: '#FCC205',
-    position: 'absolute',
-    top: 0,
-    left: 0,
+    borderRadius: 20,
   },
-
-  illustration: {
+  tabText: {
+    color: '#353336',
+    fontWeight: '600',
+    fontSize: 16,
+  },
+  profileContainer: {
+    alignItems: 'center',
+    marginBottom: 30,
+  },
+  profileImage: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    borderWidth: 3,
+    borderColor: '#FCC205',
+  },
+  profileName: {
     fontSize: 24,
-    marginBottom: 10,
-    marginTop: 250,
-    marginLeft: 40,
     fontWeight: 'bold',
-  
+    color: '#353336',
+    marginVertical: 10,
   },
-  formContainer: {
-    width: '100%',
-    height: '70%',
-    backgroundColor: '#fff',
-    padding: 10,
-    borderRadius: 30,
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    alignItems:'center'
-    
+  points: {
+    fontSize: 18,
+    color: '#353336',
+    backgroundColor: '#FCC205',
+    paddingVertical: 5,
+    paddingHorizontal: 20,
+    borderRadius: 15,
   },
- 
-  row: {
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    marginBottom: 20,
-    borderWidth:3,
-    borderColor:  '#FCC205',
-    borderRadius:10,
-    elevation: 10
+  menuContainer: {
+    marginTop: 20,
   },
-  
+  menuItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ddd',
+  },
+  menuIcon: {
+    width: 24, // Adjust icon size as needed
+    height: 24,
+    marginRight: 15,
+    resizeMode: 'contain',
+  },
+  menuText: {
+    fontSize: 18,
+    color: '#6e367c',
+  },
 });
 
 export default ProfileScreen;

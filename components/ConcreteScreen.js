@@ -87,9 +87,9 @@ const styles = StyleSheet.create({
   formContainer: {
     width: '99.5%',
     height: '70%',
-    backgroundColor: '#fff',
+    backgroundColor: '#fefefe',
     padding: 20,
-    borderRadius: 40,
+    borderRadius: 30,
     marginTop: 10,
   },
 
@@ -99,13 +99,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   concreteiconContainer: {
-    backgroundColor: '#FCC205',
+    backgroundColor: '#fefefe',
     alignItems: 'center',
     justifyContent: 'center',
     marginTop:80 ,
     marginBottom: 20,
     elevation: 10,
-    borderColor:'#FCC205',
+    borderColor:'#fefefe',
     borderWidth: 3,
     borderRadius:10
 
@@ -117,9 +117,9 @@ const styles = StyleSheet.create({
     elevation: 10,
     marginTop:30 ,
     marginBottom: 20,
-    borderColor: '#FCC205',
+    borderColor: '#fefefe',
     borderWidth: 3,
-    borderRadius: 15
+    borderRadius: 10
   },
   concreteicon: {
     width: 120, // Adjust the width and height as per your icon's aspect ratio

@@ -38,27 +38,21 @@ const slides = [
     title: "Floor Plan and Cost Estimation",
     subtitle: "Detailed Layout and Breakdown for 12 by 5 house dimension",
   },
-  
 ];
 
 const Slide = ({ item, onImagePress }) => {
   return (
     <View style={{ alignItems: 'center' }}>
-      <TouchableOpacity onPress={() => onImagePress(item.zoomedImage)}>
-        <Image
-          source={item?.image}
-          style={{
-            height: '85%',
-            width,
-            resizeMode: 'contain',
-            borderRadius: 10,
-          }}
-        />
-      </TouchableOpacity>
-      <View>
+      <View style={styles.textContainer}>
         <Text style={styles.title}>{item?.title}</Text>
         <Text style={styles.subtitle}>{item?.subtitle}</Text>
       </View>
+      <TouchableOpacity onPress={() => onImagePress(item.zoomedImage)}>
+        <View style={styles.imageContainer}>
+          <Image source={item?.image} style={styles.image}/>
+          <Text style={styles.clickImage}>Click Image to see Result</Text>
+        </View>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -77,10 +71,10 @@ const OnboardingScreen = ({ navigation }) => {
 
   const goToNextSlide = () => {
     const nextSlideIndex = currentSlideIndex + 1;
-    if (nextSlideIndex != slides.length) {
+    if (nextSlideIndex !== slides.length) {
       const offset = nextSlideIndex * width;
       ref?.current.scrollToOffset({ offset });
-      setCurrentSlideIndex(currentSlideIndex + 1);
+      setCurrentSlideIndex(nextSlideIndex);
     }
   };
 
@@ -92,7 +86,7 @@ const OnboardingScreen = ({ navigation }) => {
   };
 
   const onImagePress = (zoomedImage) => {
-    setSelectedImage(zoomedImage); // Set the different image
+    setSelectedImage(zoomedImage);
     setModalVisible(true);
   };
 
@@ -105,7 +99,7 @@ const OnboardingScreen = ({ navigation }) => {
               key={index}
               style={[
                 styles.indicator,
-                currentSlideIndex == index && {
+                currentSlideIndex === index && {
                   backgroundColor: COLORS.white,
                   width: 25,
                 },
@@ -115,7 +109,7 @@ const OnboardingScreen = ({ navigation }) => {
         </View>
 
         <View style={{ marginBottom: 20 }}>
-          {currentSlideIndex == slides.length - 1 ? (
+          {currentSlideIndex === slides.length - 1 ? (
             <View style={{ height: 50 }}>
               <TouchableOpacity
                 style={styles.btn}
@@ -160,7 +154,6 @@ const OnboardingScreen = ({ navigation }) => {
       />
       <Footer />
 
-      {/* Modal for zoomed-in (different) image */}
       {selectedImage && (
         <Modal
           visible={modalVisible}
@@ -183,8 +176,30 @@ const OnboardingScreen = ({ navigation }) => {
   );
 };
 
-// Styles moved to the bottom part of the code
 const styles = StyleSheet.create({
+  textContainer: {
+    marginBottom: 20,
+    alignItems: 'center',
+  },
+  imageContainer: {
+    height: '65%', // Adjusted height to match the image
+    width: width * 1, // Adjusted width to match the image
+    borderRadius: 10,
+    borderWidth: 4,
+    borderColor: '#FCC205', // Change this to the desired border color
+    overflow: 'hidden',
+    alignItems: 'center',
+    justifyContent: 'center',
+    alignSelf: 'center',
+    backgroundColor: '#fff',
+    elevation: 10
+    
+  },
+  image: {
+    height: '100%',
+    width: '95%',
+    resizeMode: 'contain', // Ensures the image fills the container
+  },
   subtitle: {
     color: '#353336',
     fontSize: 13,
@@ -192,18 +207,20 @@ const styles = StyleSheet.create({
     maxWidth: '70%',
     textAlign: 'center',
     lineHeight: 23,
+    marginBottom: 20
   },
   title: {
     color: '#353336',
     fontSize: 22,
     fontWeight: 'bold',
-    marginTop: 20,
     textAlign: 'center',
+    marginTop: 100
   },
-  image: {
-    height: '100%',
-    width: '100%',
-    resizeMode: 'contain',
+
+  clickImage:{
+    alignContent: 'center',
+    justifyContent:"center",
+    marginBottom: 15
   },
   indicator: {
     height: 2.5,
@@ -219,11 +236,15 @@ const styles = StyleSheet.create({
     backgroundColor: '#353336',
     justifyContent: 'center',
     alignItems: 'center',
+    borderColor :'#FCC205',
+    borderWidth: 1,
+  
   },
   skipBtn: {
     borderColor: '#353336',
-    borderWidth: 1,
+    borderWidth: 1.5,
     backgroundColor: 'transparent',
+    
   },
   skipText: {
     fontWeight: 'bold',
@@ -264,7 +285,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   modalImage: {
-    width: '90%',
+    width: '95%',
     height: '70%',
     resizeMode: 'contain',
     borderRadius: 10,
@@ -279,7 +300,7 @@ const styles = StyleSheet.create({
   },
   closeButtonText: {
     color: 'black',
-    fontSize: 18,
+    fontSize: 12,
     fontWeight: 'bold',
   },
 });
