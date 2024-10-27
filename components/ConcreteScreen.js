@@ -63,7 +63,7 @@ export default function ConcreteScreen() {
                 <Text style={styles.concreteiconText} >Roofing</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style = {styles.concreteiconContainer2} onPress={handlePress}>
+            <TouchableOpacity style = {styles.concreteiconContainer2} onPress = {() => navigation.navigate ('Room')}>
                 <Image  source={require('../assets/roomicon.png')} style={styles.concreteicon} />
                 <Text style={styles.concreteiconText} >Room</Text>
             </TouchableOpacity>

@@ -15,14 +15,6 @@ const MenuItem = ({ title, icon, onPress }) => {
 const ProfileScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity style={styles.tab}>
-          <Text style={styles.tabText}>User Profile</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.tab}>
-          <Text style={styles.tabText}>Settings</Text>
-        </TouchableOpacity>
-      </View>
 
       <View style={styles.profileContainer}>
         <Image
@@ -91,6 +83,7 @@ const styles = StyleSheet.create({
   profileContainer: {
     alignItems: 'center',
     marginBottom: 30,
+    marginTop: 40
   },
   profileImage: {
     width: 100,

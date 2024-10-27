@@ -16,6 +16,8 @@ import HouseDimensionScreen from '../components/HouseDimensionScreen';
 import FootingScreen from '../components/FootingScreen';
 import ColumnScreen from '../components/ColumnScreen';
 import SuggestProject from '../components/SuggestProject';
+import SaveProjects from '../components/SaveProjects';
+import RoomSize from '../components/Room';
 
 
 const Stack = createStackNavigator();
@@ -41,6 +43,9 @@ const AppNavigator = () => {
           <Stack.Screen name="Footing" component={FootingScreen} />
           <Stack.Screen name="Column" component={ColumnScreen} />
           <Stack.Screen name="Suggest" component={SuggestProject} />
+          <Stack.Screen name="SavedProjects" component={SaveProjects} />
+          <Stack.Screen name="Room" component={RoomSize} />
+          
         </Stack.Navigator>
 
     </NavigationContainer>

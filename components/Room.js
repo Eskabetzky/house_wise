@@ -1,17 +1,41 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Alert } from 'react-native';
 
-const FootingSteelCalculation = () => {
-  const [footingLength, setFootingLength] = useState('');
-  const [footingWidth, setFootingWidth] = useState('');
+const HouseDimensionScreen = () => {
+
+  //House Dimension
+  const [houseLength, setHouseLength] = useState('');
+  const [houseWidth, setHouseWidth] = useState('');
+  const [houseArea, setHouseArea] = useState('');
+
+  const calculateHouseArea = () => {
+    if (houseLength && houseWidth) {
+      const area = parseFloat(houseLength) * parseFloat(houseWidth);
+
+      if (area > 50) {
+        Alert.alert('Error', 'The total area cannot exceed 50 square meters.');
+        setHouseArea(''); // Clear area if limit exceeded
+      } else if (area < 20) {
+        Alert.alert('Error', 'The total area cannot be less than 20 square meters.');
+        setHouseArea(''); // Clear area if below limit
+      } else {
+        setHouseArea(area.toFixed(2)); // Set the result with 2 decimal places
+      }
+    } else {
+      setHouseArea(''); // Reset the area if inputs are cleared
+    }
+  };
+  //Footing Formula
+  const [footingLength, setFootingLength] = useState('1');
+  const [footingWidth, setFootingWidth] = useState('1');
   const [footingThickness, setFootingThickness] = useState('0.25'); // default 20 cm (0.20 meters)
-  const [numOfSlabs, setNumOfSlabs] = useState(); // default to 12 slabs
+  const [numOfSlabs, setNumOfSlabs] = useState(''); // default to 12 slabs
   const [spacing1, setSpacing1] = useState('150'); // default 150mm
   const [spacing2, setSpacing2] = useState('150'); // default 150mm
-  const [pricePerBar, setPricePerBar] = useState(''); // Price per 6-meter bar
-  const [cementPricePerBag, setCementPricePerBag] = useState(''); // Price per bag of cement
-  const [sandPricePerCubicMeter, setSandPricePerCubicMeter] = useState(''); // Price per cubic meter of sand
-  const [gravelPricePerCubicMeter, setGravelPricePerCubicMeter] = useState(''); // Price per cubic meter of gravel
+  const [pricePerBar, setPricePerBar] = useState('150'); // Price per 6-meter bar
+  const [cementPricePerBag, setCementPricePerBag] = useState('250'); // Price per bag of cement
+  const [sandPricePerCubicMeter, setSandPricePerCubicMeter] = useState('2200'); // Price per cubic meter of sand
+  const [gravelPricePerCubicMeter, setGravelPricePerCubicMeter] = useState('2200'); // Price per cubic meter of gravel
   const [steelBars, setSteelBars] = useState(0);
   const [totalBars, setTotalBars] = useState(0);
   const [steelCost, setSteelCost] = useState(0);
@@ -57,7 +81,7 @@ const FootingSteelCalculation = () => {
     const barsForWidth = Math.ceil(width / minSpacing) + 1;
 
     // Total number of 1-meter pieces needed
-    const totalBarsNeeded = barsForLength + barsForWidth;
+    const totalBarsNeeded = barsForLength * barsForWidth;
 
     // Number of 6-meter steel bars required
     const steelBarsRequired = Math.ceil(totalBarsNeeded / 6); // Since each steel bar is 6 meters long
@@ -96,37 +120,42 @@ const FootingSteelCalculation = () => {
     setTotalMaterialCost(totalCost);
   };
 
-  const resetFields = () => {
-    setFootingLength('');
-    setFootingWidth('');
-    setFootingThickness('0.20');
-    setNumOfSlabs('12');
-    setSpacing1('150');
-    setSpacing2('150');
-    setPricePerBar('');
-    setCementPricePerBag('');
-    setSandPricePerCubicMeter('');
-    setGravelPricePerCubicMeter('');
-    setSteelBars(0);
-    setTotalBars(0);
-    setSteelCost(0);
-    setVolume(0);
-    setCementBags(0);
-    setSandCubicMeters(0);
-    setGravelCubicMeters(0);
-    setCementCost(0);
-    setSandCost(0);
-    setGravelCost(0);
-    setTotalMaterialCost(0);
-  };
+
 
   return (
     <ScrollView>
       <View style={styles.container}>
-        <Text style={styles.title}>Footing Steel & Material Calculation</Text>
+        <Text style={styles.title}>House Dimension Calculation</Text>
+
+        <View style={styles.inputRow}>
+          <Text style={styles.textLabel}>Length L (m):</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Enter House Length"
+            value={houseLength}
+            onChangeText={setHouseLength}
+            keyboardType="numeric"
+          />
+        </View>
+
+        <View style={styles.inputRow}>
+          <Text style={styles.textLabel}>Width W (m):</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Enter House Width"
+            value={houseWidth}
+            onChangeText={setHouseWidth}
+            keyboardType="numeric"
+          />
+        </View>
+
+        <TouchableOpacity style={styles.calculateButton} onPress={calculateHouseArea}>
+          <Text style={styles.buttonText}>Calculate Area</Text>
+        </TouchableOpacity>
+
 
         {/* Inputs for Length, Width, and Thickness */}
-        <View style={styles.inputRow}>
+        {/* <View style={styles.inputRow}>
           <Text style={styles.label}>Footing Length (m):</Text>
           <TextInput
             style={styles.input}
@@ -155,20 +184,10 @@ const FootingSteelCalculation = () => {
             onChangeText={setFootingThickness}
             keyboardType="numeric"
           />
-        </View>
-        <View style={styles.inputRow}>
-          <Text style={styles.label}>Number of Slabs:</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Number of Slabs (default 12)"
-            value={numOfSlabs}
-            onChangeText={setNumOfSlabs}
-            keyboardType="numeric"
-          />
-        </View>
+        </View> */}
 
         {/* Inputs for spacing */}
-        <View style={styles.label2}>
+        {/* <View style={styles.label2}>
           <Text style={styles.labelSpacing}>Spacing 1 (mm):</Text>
           <TextInput
             style={styles.input2}
@@ -185,11 +204,11 @@ const FootingSteelCalculation = () => {
             onChangeText={setSpacing2}
             keyboardType="numeric"
           />
-        </View>
+        </View> */}
 
 
         {/* Inputs for prices */}
-        <View style={styles.inputRow}>
+        {/* <View style={styles.inputRow}>
           <Text style={styles.label}>Steel Bar Price (₱ per 6m):</Text>
           <TextInput
             style={styles.input}
@@ -228,22 +247,35 @@ const FootingSteelCalculation = () => {
             onChangeText={setGravelPricePerCubicMeter}
             keyboardType="numeric"
           />
+        </View> */}
+
+        {/*House Dimension Result*/}
+        <View style={styles.resultContainer}>
+          <Text style={styles.resultText1}>House Area: {houseArea} m²</Text>
         </View>
 
-        {/* Button to trigger calculation */}
-        <View style={styles.inputRow2}>
+        <View style={styles.Footingtext}>
+          <Text style={styles.title}>Footing Calculations</Text>
+        </View>
+        <View style={styles.inputRow}>
+          <Text style={styles.label}>Number of Slabs:</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Number of Slabs (default 12)"
+            value={numOfSlabs}
+            onChangeText={setNumOfSlabs}
+            keyboardType="numeric"
+          />
+        </View>
+
           <TouchableOpacity style={styles.calculateButton} onPress={calculateSteelBarsAndMaterials}>
             <Text style={styles.buttonText}>Calculate</Text>
           </TouchableOpacity>
 
-          {/* Button to reset all fields */}
-          <TouchableOpacity style={styles.resetButton} onPress={resetFields}>
-            <Text style={styles.buttonText}>Reset</Text>
-          </TouchableOpacity>
-        </View>
+
 
         {/* Display result dynamically */}
-        <View style={styles.resultContainer}>
+        <View style={styles.resultContainer2}>
           <Text style={styles.resultText}>Steel Calculation:</Text>
           <View style={styles.resultsRow}>
             <Text>Total Rebars Needed: </Text>
@@ -284,6 +316,8 @@ const FootingSteelCalculation = () => {
             <Text>{totalMaterialCost.toFixed(2)} ₱</Text>
           </View>
         </View>
+
+        
       </View>
     </ScrollView>
   );
@@ -293,8 +327,53 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#f0f0f0',
-    marginTop: 50,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 18,
+    marginTop: 100,
+  },
+  inputRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 15,
+    justifyContent: 'space-between',
+  },
+  textLabel: {
+    fontWeight: 'bold',
+  },
+  input: {
+    borderWidth: 2,
+    borderColor: '#000',
+    borderRadius: 5,
+    padding: 5,
+    width: 150,
+    height: 35,
+  },
+  calculateButton: {
+    backgroundColor: '#FCC205',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 10,
+    alignItems: 'center',
+    marginTop: 20,
+  },
+  buttonText: {
+    color: '#000',
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  resultContainer: {
+    marginTop: 20,
+    borderWidth: 2,
+    borderColor: '#FCC205',
+    borderRadius: 5,
+    padding: 10,
+    backgroundColor: '#f9f9f9',
+  },
+  resultText1: {
+    fontSize: 15,
   },
   title: {
     fontSize: 24,
@@ -348,14 +427,11 @@ const styles = StyleSheet.create({
     height: 35,
     width: 200,
   },
-  calculateButton: {
-    backgroundColor: '#FCC205',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 10,
-    alignItems: 'center',
-    marginTop: 10,
+
+  Footingtext: {
+    marginTop: 40
   },
+
   resetButton: {
     backgroundColor: '#FF6347',
     paddingVertical: 10,
@@ -370,7 +446,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
   },
-  resultContainer: {
+  resultContainer2: {
     marginTop: 20,
     padding: 15,
     backgroundColor: '#fff',
@@ -391,4 +467,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default FootingSteelCalculation;
+export default HouseDimensionScreen;
